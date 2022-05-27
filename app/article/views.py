@@ -26,3 +26,31 @@ def articles(category):
     if request.path:
         return render_template('user_articles.html', articles=articles, category=category)
     return render_template('index.html', articles=articles)
+
+
+# Add New Article
+@article.route('/new', methods=['GET', 'POST'])
+@login_required
+def create_article():
+    article_form = ArticleForm()
+    if article_form.validate_on_submit():
+        title = article_form.title.data
+        body = article_form.body.data
+        category = article_form.category.data.lower()
+        article = Article(author_id=current_user.id,
+                          title=title, body=body, category=category)
+        if "photo" in request.files:
+            filename = request.files["photo"]
+            if filename:
+                article.image_path = f"photos/{photos.save(filename)}"
+        article.save()
+        subscribers = Subscriber.query.all()
+        if subscribers:
+            for subscriber in subscribers:
+                mail_message("Welcome to Flask Blog IO!",
+                             "email/welcome_user", subscriber.email)
+            sleep(0.05)
+        flash("Article created successfully!")
+        flash(f"Emailed {len(subscribers)} subscribers")
+        return redirect(request.args.get('next') or url_for('article.articles', category=category))
+    return render_template('forms/new_article.html', article_form=article_form)
