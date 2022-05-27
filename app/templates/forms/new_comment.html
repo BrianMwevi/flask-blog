@@ -1,0 +1,9 @@
+  <div class="form">
+    <form action="{{url_for('comment.new_comment', article_id=article.id)}}" method="POST">
+      {{comment_form.csrf_token}}
+      <div class="form-group">
+      {{ comment_form.body(class="article-body px-3 pt-3 text-muted bg-light", placeholder="Share your thoughts...", onkeyup="adjustArticleBody(this)" )}}
+    </div>
+      {{comment_form.submit(class='submit-btn btn btn-sm btn-outline-success mt-0')}}
+    </form>
+  </div>
