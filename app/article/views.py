@@ -87,7 +87,7 @@ def update(article_id):
 @article.route('/delete/<int:article_id>', methods=['POST'])
 @login_required
 def delete(article_id):
-    article = Article.query.filter_by(id=article_id).first()
+    article = Article.query.get(article_id)
     if article is not None:
         article.delete()
         flash(f"{article.title} deleted successfully")
