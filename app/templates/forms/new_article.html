@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="article-container">
+    <div class="container mb-5">
+      <h3 class="text-center custom-color-2">Article Form</h3>
+      <div class="row">
+        <div class="col-auto col-lg-10 bg-light p-5 mx-auto form-text">
+          <form method="POST" enctype=multipart/form-data >
+            {{article_form.csrf_token}}
+            {% if edit_article %}
+              <div class="form-group">
+                <input type="file" name="photo" id="photo" >
+              </div>
+              <div class="form-group">
+                {{article_form.title(class="article-title", placeholder="Title...", value=article.title)}}
+              </div>
+              <div class="form-group">
+                {{article_form.category(class='article-category', placeholder="Post category", value=article.category)}}
+              </div>
+              <div class="form-group">
+                <textarea name="body" class="article-body" onkeyup="adjustArticleBody(this)" onfocus="adjustArticleBody(this)">{{article.body}}</textarea>
+              </div>
+              <button type="submit" class="btn btn-outline-info custom-color-2">Update Article</button>
+            {% else %}
+              <div class="form-group">
+                <input type="file" name="photo" id="photo" >
+              </div>
+              <div class="form-group">
+                {{article_form.title(class="article-title", placeholder="Title...")}}
+              </div>
+              <div class="form-group">
+                {{article_form.category(class='article-category', placeholder="Post category")}}
+              </div>
+              <div class="form-group">
+                {{ article_form.body(class="article-body", placeholder="Post content", onkeyup="adjustArticleBody(this)") }}
+              </div>
+              {{article_form.submit(class='btn btn-outline-info custom-color-2')}}
+          {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
