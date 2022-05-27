@@ -22,4 +22,15 @@ def register():
     return render_template('index.html')
 
 
-
+@auth.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        user = User.query.filter_by(email=email).first()
+        if user is not None and user.verify_password(password):
+            login_user(user)
+            flash("Logged In Successfully!")
+            return redirect(request.args.get('next') or url_for('home.index', category="all"))
+        flash('Invalid email or password')
+    return render_template('index.html')
