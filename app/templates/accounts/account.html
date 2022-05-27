@@ -1,0 +1,90 @@
+<!-- Account Section End -->
+<div class="account-container">
+  <div class="account-overlay"></div>
+  <div class="account">
+    <div class="signup-container form-container overlay-left-inactive">
+      <form class = 'sigup-form' method="POST" action="{{ url_for('auth.register') }}" class="account-form">
+        <h3 class="pb-2 custom-color-2">Create Account</h3>
+        <div class="form-group">
+          <input type="text" name="email" class="form-control" placeholder="Email" required autofocus />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            placeholder="Username"
+            required autofocus />
+        </div>
+        <div class="form-group">
+          <input
+            name="password"
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div class="text-center">
+          <button class="btn btn-outline-info custom-color-2">Sign Up</button>
+        </div>
+      </form>
+    </div>
+    <div class="login-container form-container">
+      <form class="account-form" action="{{url_for('auth.login') }}" method="POST">
+        <h3 class="pb-2 custom-color-2">Sign In</h3>
+        <div class="form-group">
+          <input
+            type="email"
+            name="email"
+            class="form-control"
+            placeholder="Enter email address"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <a href="#" class="custom-color-2">Forgot your password?</a>
+        <div class="text-center">
+          <button class="btn btn-outline-info">Sign In</button>
+        </div>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-content overlay-left">
+          <div class="overlay-text">
+            <h3 class="pt-1">Welcome Back!</h3>
+            <p class="mt-2 pt-1">
+              Enter email and password to login
+            </p>
+            <p class="mb-2">Don't have an account?</p>
+            <button class="btn btn-outline-light signup-btn">
+              Sign Up
+            </button>
+          </div>
+        </div>
+        <div class="overlay-content overlay-right">
+          <div class="overlay-text">
+            <h3 class="pt-1">Hi, Joining Us?</h3>
+            <p class="mt-2 pt-1">
+              Register to kickstart your journey with us
+            </p>
+            <p class="mb-2" class="text-light">
+              Already have an account?
+            </p>
+            <button class="btn btn-outline-light login-btn">Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+			<!-- Account Section Start -->
