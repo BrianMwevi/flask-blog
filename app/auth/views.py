@@ -44,3 +44,17 @@ def logout():
     return redirect(url_for('home.index'))
 
 
+@auth.route('/subscription/subscribe', methods=['POST'])
+def subscription():
+    email = request.form.get('email')
+    subscriber = Subscriber.query.filter_by(email=email).first()
+    if subscriber == None:
+        subscriber = Subscriber(email=email)
+        if current_user.is_authenticated and current_user.email == email:
+            subscriber.user = current_user
+        subscriber.subscribe()
+        flash("You've successfully subscribed")
+    else:
+        subscriber.unsubscribe()
+        flash("You've successfully unsubscribed")
+    return redirect(url_for('home.index'))
