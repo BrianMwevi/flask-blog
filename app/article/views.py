@@ -81,3 +81,15 @@ def update(article_id):
         article.update()
         return redirect(url_for('article.detail', article_id=article_id))
     return render_template('forms/new_article.html', article=article, edit_article=True, article_form=article_form)
+
+
+# Delete Article
+@article.route('/delete/<int:article_id>', methods=['POST'])
+@login_required
+def delete(article_id):
+    article = Article.query.filter_by(id=article_id).first()
+    if article is not None:
+        article.delete()
+        flash(f"{article.title} deleted successfully")
+        return redirect(url_for("article.articles", category='all'))
+    flash("No such article")
