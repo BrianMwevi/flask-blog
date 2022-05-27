@@ -18,3 +18,15 @@ def new_comment(article_id):
     else:
         flash("Please fill the form with the correct details and try again")
     return redirect(url_for('article.detail', article_id=article_id))
+
+
+# Update Comment View
+@comment.route('/update/<int:article_id>/<int:comment_id>', methods=['POST'])
+def update(article_id, comment_id):
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        comment = Comment.query.filter(id=comment_id).first()
+        comment.update()
+        flash("Comment updated successfully")
+    flash("Please fill the form with the correct details and try again")
+    return redirect(url_for('article.detail', article_id=article_id))
