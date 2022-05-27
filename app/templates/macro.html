@@ -1,0 +1,106 @@
+<!-- Display All Articles -->
+{% macro display_all_articles(articles,user) %}
+  {% for article in articles %}
+  <div class="col-lg-3 article-image my-auto">
+    <a class="p-0 m-0" href="{{url_for('article.detail', article_id=article.id)}}">
+      <img src="/static/{{article.image_path}}" class="img-fluid rounded p-0 m-0" alt="Article Image">
+    </a>
+  </div>
+  <div class="col-lg-9 my-2 bg-light">
+    <div class="article-text">
+      <h3>
+        <a class="nav-link text-secondary" href="{{url_for('article.detail',article_id=article.id)}}">{{article.title}}</a>
+      </h3>
+      <p>
+        <a class="nav-link p-0 m-0 text-secondary" href="{{url_for('article.detail',article_id=article.id)}}">{{article.body | truncate(400)}}</a>
+      </p>
+      <p>
+        <i class="fas fa-user-edit custom-color-2"></i>
+        <a href="#" class="text-muted custom-color-2"><small>{{article.author}}</small></a>
+        <i class="fas fa-comment-alt ml-4 custom-color-2"></i>
+        <sup class="ml-1">{{article.comments | length}}</sup>
+      </p>
+      <p class="text-muted custom-color-2"><small><i class="fas fa-clock pt-1 p-1"></i>{{article.created_at.strftime('%d %B %Y at %I %p')}}</small></p>
+    </div>
+  </div>
+  {% endfor %}
+{%endmacro%}
+
+<!-- Delete Article Macro -->
+{% macro display_article_detail(article,user, comment_form) %}
+<div class="col-lg-2 px-0">
+  <p class="mt-5">
+    <strong>Published on: </strong>{{article.created_at.strftime('%d %B %Y')}}
+  </p>
+  <p>
+    <strong>Comments: </strong>{{article.comments|length}}
+  </p>
+  <!-- Crude Operations Start -->
+    {% if user.is_authenticated and article.author_id == user.id %}
+    <a href="{{url_for('article.update', article_id=article.id)}}" class="btn btn-sm btn-primary mr-2">Edit Article</a>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-sm btn-danger ml-2" data-toggle="modal" data-target="#deleteModal">
+      Delete Article
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title custom-color-2" id="deleteModalLabel">Are you sure you want to delete?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body custom-color-2">
+          {{article.title|truncate(50)}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn custom-bg text-white" data-dismiss="modal">Cancel</button>
+            <form action="{{url_for('article.delete', article_id=article.id)}}" method="POST">
+              <button class="btn bg-danger text-white">Confirm</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <!-- Crude Operations End -->
+</div>
+  <div class="col-lg-8 px-5 bg-light">
+    <div class="article-title">
+      <h2 class="text-center custom-color-2">{{article.title}}</h2>
+    </div>
+    <div class="article-img-container">
+      <img class="article-detail-img" src="/static/{{article.image_path}}" alt="{{article.category}}">
+    </div>
+    <div class="article-body custom-color-2">
+      <p>{{article.body}}</p>
+    </div>
+    {% if user.is_authenticated and user.id != article.author_id %}
+      <button class="btn btn-outline-info btn-sm toggle-comment-form">Comment</button>
+      <div class="comment-form mt-2">
+        {% include "forms/new_comment.html" %}
+      </div>
+    {% endif %}
+    {% if article.comments %}
+      <div class="mt-3 w-75">
+        <p class="p-0 m-0">Comments</p>
+        {% for comment in article.comments %}
+          <div class="text-muted custom-color-2">
+            {% if user.is_authenticated and article.author_id == user.id %}
+            <form class="delete-comment-form float-right" id="deleteCommentForm{{comment.id}}" action="{{url_for('comment.delete', comment_id=comment.id, article_id=article.id )}}" method="POST">
+              <button type="submit" class="btn p-0"><i class="fas fa-trash custom-color-2"></i></button>
+            </form>
+          {% endif %}
+            <p class="comment-box" id="comment{{comment.id}} ">
+              <strong class="badge badge-dark mr-1">@{{comment.user.username}}</strong>
+            <small>{{comment.body}}</small><br>
+            <small><i class="fas fa-time"></i>{{comment.created_at.strftime('%d %b at %I %p')}}</small>
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endmacro %}
