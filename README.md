@@ -4,6 +4,13 @@
 
 A Flask web application where users, sigup, login, subscribe to newsletter, create, post and comment on blog posts.
 
+### Demo
+**Login as a writer**<br>
+> Email: ```admin@gmail.com```<br>
+> Password: ```admin```<br>
+
+Live Site: https://flask-blog-io.herokuapp.com/
+
 ### Technologies Used
 
 - Python
