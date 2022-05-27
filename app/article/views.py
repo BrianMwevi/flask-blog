@@ -62,3 +62,22 @@ def detail(article_id):
     comment_form = CommentForm()
     article = Article.query.filter_by(id=article_id).first()
     return render_template('article_detail.html', article=article, comment_form=comment_form)
+
+
+# Update Article Details
+@article.route('/update/<int:article_id>/', methods=['GET', 'POST'])
+@login_required
+def update(article_id):
+    article = Article.query.filter_by(id=article_id).first()
+    article_form = ArticleForm()
+    if request.method == 'POST':
+        article.title = article_form.title.data
+        article.category = article_form.category.data
+        article.body = article_form.body.data
+        if "photo" in request.files:
+            filename = request.files["photo"]
+            if filename:
+                article.image_path = f"photos/{photos.save(filename)}"
+        article.update()
+        return redirect(url_for('article.detail', article_id=article_id))
+    return render_template('forms/new_article.html', article=article, edit_article=True, article_form=article_form)
