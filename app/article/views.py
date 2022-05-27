@@ -54,3 +54,11 @@ def create_article():
         flash(f"Emailed {len(subscribers)} subscribers")
         return redirect(request.args.get('next') or url_for('article.articles', category=category))
     return render_template('forms/new_article.html', article_form=article_form)
+
+
+# Display Article Details
+@article.route('/detail/<int:article_id>/')
+def detail(article_id):
+    comment_form = CommentForm()
+    article = Article.query.filter_by(id=article_id).first()
+    return render_template('article_detail.html', article=article, comment_form=comment_form)
