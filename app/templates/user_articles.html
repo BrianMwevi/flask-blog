@@ -1,0 +1,57 @@
+{% if category %}
+{% extends 'base.html' %}
+{% endif %}
+{% import "macro.html"  as macro %}
+
+{% block navbar %}
+  {% if category %}
+    {% include 'navbar.html' %}
+  {% endif %}
+{% endblock %}
+{% block content %}
+<section>
+  <div class="container-fluid px-5">
+    <div class="row px-5">
+      <!-- Right articles Content Start -->
+      <div class="col-lg-9">
+        <div class="row">
+          <div class="col">
+            <div class="navbar">
+              <ul class="nav nav-tabs p-0 m-0">
+                <li class="nav-item">
+                  <a href="{{url_for('article.articles', category='today')}}" class="nav-link text-secondary">
+                    <i class="fab fa-gripfire text-danger"></i>
+                    Today
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{url_for('article.articles', category='this_week')}}" class="nav-link text-secondary">
+                    <i class="fas fa-bolt"></i>
+                    This week
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{url_for('article.articles', category='all')}}" class="nav-link text-secondary">
+                    <i class="far fa-clock"></i>
+                    All
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          {{macro.display_all_articles(articles, current_user)}}
+        </div>
+      </div>
+      <!-- Right articles Content End -->
+      <div class="col-lg-3 mt-5 text-center"> 
+          <p><i class="fas fa-tags custom-color-2"></i>Tags</p>
+          {% for article in articles %}
+            <div class="badge custom-bg text-white px-2 py-1 m-2">{{article.category}}</div>
+          {% endfor %}
+        </div>
+    </div>
+  </div>
+</section> 
+{% endblock %}
