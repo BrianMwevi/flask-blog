@@ -34,3 +34,13 @@ def login():
             return redirect(request.args.get('next') or url_for('home.index', category="all"))
         flash('Invalid email or password')
     return render_template('index.html')
+
+
+@login_required
+@auth.route('/logout')
+def logout():
+    logout_user()
+    flash("Logged Out Successfully!")
+    return redirect(url_for('home.index'))
+
+
