@@ -30,3 +30,13 @@ def update(article_id, comment_id):
         flash("Comment updated successfully")
     flash("Please fill the form with the correct details and try again")
     return redirect(url_for('article.detail', article_id=article_id))
+
+
+# Delete Comment View
+@login_required
+@comment.route('/<int:article_id>/delete/<int:comment_id>', methods=['POST'])
+def delete(comment_id, article_id):
+    comment = Comment.query.get(comment_id)
+    comment.delete()
+    flash("Comment deleted successfully!")
+    return redirect(url_for('article.detail', article_id=article_id))
